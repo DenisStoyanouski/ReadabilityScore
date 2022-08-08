@@ -5,6 +5,7 @@ import org.w3c.dom.ls.LSOutput;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -153,24 +154,26 @@ public class Main {
             case 5 : rage = "10";
             break;
             case 6 : rage = "11";
-                break;
+            break;
             case 7 : rage = "12";
-                break;
+            break;
             case 8 : rage = "13";
-                break;
+            break;
             case 9 : rage = "14";
-                break;
+            break;
             case 10 : rage = "15";
-                break;
+            break;
             case 11 : rage = "16";
-                break;
+            break;
             case 12 : rage = "17";
-                break;
+            break;
             case 13 : rage = "18";
-                break;
+            break;
             case 14 : rage = "19";
+            break;
+            default:
+                System.out.println("Something wrong");
                 break;
-            default: break;
         }
         return rage;
     }
@@ -205,7 +208,9 @@ public class Main {
                 break;
             case 14 : rage = "22";
                 break;
-            default: break;
+            default:
+                System.out.println("Something wrong");
+                break;
         }
         return rage;
     }
