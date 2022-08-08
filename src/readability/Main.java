@@ -49,23 +49,56 @@ public class Main {
     }
 
     private static void countSyllables(String input) {
-        var line = input.split("\\s+" );
-        for (String word : line) {
-            if (word.length() <= 3) {
-                syllables++;
-            } else {
-                Pattern p = Pattern.compile("[aeiouy]+[^$e(,.:;!?)]");
-                Matcher m = p.matcher(word);
-                int count = 0;
-                while (m.find()){
-                    syllables++;
-                    count++;
-                }
-                if (count >= 3) {
-                    polysyllables++;
-                }
+        String[] words = input.split("\\s+");
+        for(String word : words) {
+            int amount = count(word);
+            syllables += amount;
+            if (amount >= 3) {
+                polysyllables++;
             }
         }
+    }
+
+    protected static int count(String word)
+    {
+        int count = 0;
+        word = word.toLowerCase().replaceAll("[!?.,]", "");
+
+        if (word.charAt(word.length()-1) == 'e') {
+            if (silente(word)){
+                String newword = word.substring(0, word.length()-1);
+                count = count + countit(newword);
+            } else {
+                count++;
+            }
+        } else {
+            count = count + countit(word);
+        }
+        System.out.println(word + " " + count);
+        return count != 0 ? count : 1;
+    }
+
+    private static int countit(String word) {
+        int count = 0;
+        Pattern splitter = Pattern.compile("[^aeiouy]*[aeiouy]+");
+        Matcher m = splitter.matcher(word);
+
+        while (m.find()) {
+            count++;
+        }
+        return count;
+    }
+
+    private static boolean silente(String word) {
+        word = word.substring(0, word.length()-1);
+
+        Pattern yup = Pattern.compile("[aeiouy]");
+        Matcher m = yup.matcher(word);
+
+        if (m.find()) {
+            return true;
+        } else
+            return false;
     }
 
     private static void printResult(String line) {
