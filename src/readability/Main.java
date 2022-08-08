@@ -104,6 +104,15 @@ public class Main {
 
     }
 
+    private static void startAllMethods() {
+        getScoreARI();
+        getScoreFK();
+        getScoreSMOG();
+        getScoreCL();
+
+    }
+
+
     private static void getScoreCL() {
         float score;
         score = 0.0588f * (float) (characters / words) - 0.296f * (float) (sentences / words) - 15.8f;
