@@ -96,7 +96,7 @@ public class Main {
                 case "CL" : getScoreCL();
                 break;
                 case "all" : startAllMethods();
-                    break;
+                break;
                 default : System.out.println("Choose correct item");
                 break;
             }
