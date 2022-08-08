@@ -74,7 +74,6 @@ public class Main {
         } else {
             count = count + countit(word);
         }
-        System.out.println(word + " " + count);
         return count != 0 ? count : 1;
     }
 
@@ -95,10 +94,7 @@ public class Main {
         Pattern yup = Pattern.compile("[aeiouy]");
         Matcher m = yup.matcher(word);
 
-        if (m.find()) {
-            return true;
-        } else
-            return false;
+        return m.find();
     }
 
     private static void printResult(String line) {
@@ -168,7 +164,7 @@ public class Main {
     }
 
     private static void getScoreCL() {
-        cL = 0.0588f * (float) (characters / words * 100) - 0.296f * (float) (sentences / words * 100) - 15.8f;
+        cL = 0.0588f *  ((float) characters / words) * 100 - 0.296f * ((float) sentences / words) * 100 - 15.8f;
         System.out.printf("Coleman–Liau index: %.2f (about %d-year-olds).%n", cL, getRage(cL));
     }
 
