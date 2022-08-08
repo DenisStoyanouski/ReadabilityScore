@@ -44,7 +44,7 @@ public class Main {
     }
 
     private static void countCharacters(String input) {
-        String line = input.replaceAll("[\\s|\\n|\\t]", "");
+        String line = input.replaceAll("[\\s\\n\\t]", "");
         characters = line.length();
     }
 
@@ -112,6 +112,7 @@ public class Main {
         getScoreFK();
         getScoreSMOG();
         getScoreCL();
+        getAverageAge();
 
     }
 
@@ -119,103 +120,105 @@ public class Main {
     private static void getScoreARI() {
 
         aRI =  4.71f * characters / words + 0.5f * words / sentences - 21.43f;
-
-        System.out.printf("Automated Readability Index: %.2f (about %s-year-olds).%n", aRI, getARIRage(aRI));
+        System.out.println();
+        System.out.printf("Automated Readability Index: %.2f (about %d-year-olds).%n", aRI, getARIRage(aRI));
     }
 
     private static void getScoreFK() {
         fK = (((0.39f * words) / sentences) + ((11.8f * syllables) / words)) - 15.59f;
-        System.out.printf("Flesch–Kincaid readability tests: %.2f (about %s-year-olds).%n", fK, getRage(fK));
+        System.out.printf("Flesch–Kincaid readability tests: %.2f (about %d-year-olds).%n", fK, getRage(fK));
     }
 
     private static void getScoreSMOG() {
         sMOG = (1.043f * (float) Math.sqrt((double) (polysyllables * 30) / sentences)) + 3.1291f;
-        System.out.printf("Simple Measure of Gobbledygook: %.2f (about %s-year-olds).%n", sMOG, getRage(sMOG));
+        System.out.printf("Simple Measure of Gobbledygook: %.2f (about %d-year-olds).%n", sMOG, getRage(sMOG));
     }
 
     private static void getScoreCL() {
         cL = 0.0588f * (float) (characters / words * 100) - 0.296f * (float) (sentences / words * 100) - 15.8f;
-        System.out.printf("Coleman–Liau index: %.2f (about %s-year-olds).%n", cL, getRage(cL));
+        System.out.printf("Coleman–Liau index: %.2f (about %d-year-olds).%n", cL, getRage(cL));
     }
 
     private static void getAverageAge() {
         float age;
-        age = getARIRage(aRI)
+        age = (aRI + sMOG + cL + fK) / 4;
+        System.out.println();
+        System.out.printf("This text should be understood in average by %.2f-year-olds.", age);
     }
 
 
 
-    private static String getARIRage(float score) {
-        int rage = "";
+    private static int getARIRage(float score) {
+        int age = 0;
         switch ((int) Math.ceil(score)) {
-            case 1: rage = 6;
+            case 1: age = 6;
             break;
-            case 2 : rage = 7;
+            case 2 : age = 7;
             break;
-            case 3 : rage = 8;
+            case 3 : age = 8;
             break;
-            case 4 : rage = 9;
+            case 4 : age = 9;
             break;
-            case 5 : rage = 10;
+            case 5 : age = 10;
             break;
-            case 6 : rage = 11;
+            case 6 : age = 11;
             break;
-            case 7 : rage = 12;
+            case 7 : age = 12;
             break;
-            case 8 : rage = "13";
+            case 8 : age = 13;
             break;
-            case 9 : rage = "14";
+            case 9 : age = 14;
             break;
-            case 10 : rage = "15";
+            case 10 : age = 15;
             break;
-            case 11 : rage = "16";
+            case 11 : age = 16;
             break;
-            case 12 : rage = "17";
+            case 12 : age = 17;
             break;
-            case 13 : rage = "18";
+            case 13 : age = 18;
             break;
-            case 14 : rage = "19";
+            case 14 : age = 19;
             break;
             default:
                 break;
         }
-        return rage;
+        return age;
     }
-    private static String getRage(float score) {
-        String rage = "";
+    private static int getRage(float score) {
+        int age = 0;
         switch ((int) Math.ceil(score)) {
-            case 1: rage = "6";
+            case 1: age = 6;
                 break;
-            case 2 : rage = "7";
+            case 2 : age = 7;
                 break;
-            case 3 : rage = "8";
+            case 3 : age = 8;
                 break;
-            case 4 : rage = "9";
+            case 4 : age = 9;
                 break;
-            case 5 : rage = "10";
+            case 5 : age = 10;
                 break;
-            case 6 : rage = "11";
+            case 6 : age = 11;
                 break;
-            case 7 : rage = "12";
+            case 7 : age = 12;
                 break;
-            case 8 : rage = "13";
+            case 8 : age = 13;
                 break;
-            case 9 : rage = "14";
+            case 9 : age = 14;
                 break;
-            case 10 : rage = "15";
+            case 10 : age = 15;
                 break;
-            case 11 : rage = "16";
+            case 11 : age = 16;
                 break;
-            case 12 : rage = "17";
+            case 12 : age = 17;
                 break;
-            case 13 : rage = "18";
+            case 13 : age = 18;
                 break;
-            case 14 : rage = "22";
+            case 14 : age = 22;
                 break;
             default:
                 break;
         }
-        return rage;
+        return age;
     }
 
 
