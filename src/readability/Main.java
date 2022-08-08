@@ -1,13 +1,11 @@
 package readability;
 
-import org.w3c.dom.ls.LSOutput;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.SQLOutput;
-import java.util.Arrays;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
     private static int words = 0;
@@ -16,7 +14,15 @@ public class Main {
 
     private static int syllables = 0;
     private static int polysyllables = 0;
-    static final int NUMBER_OF_SYMBOLS = 100;
+
+    private static float aRI = 0;
+
+    private static float fK = 0;
+
+    private static float sMOG = 0;
+
+    private static float cL = 0;
+
     public static void main(String[] args) throws IOException {
         String line = getInput(args[0]);
         printResult(line);
@@ -25,14 +31,6 @@ public class Main {
 
     private static String getInput(String fileName) throws IOException {
         return new String(Files.readAllBytes(Paths.get(fileName)));
-    }
-
-    private static void isConsidered(String input) {
-        if (input.length() > NUMBER_OF_SYMBOLS) {
-            System.out.println("HARD");
-        } else {
-            System.out.println("EASY");
-        }
     }
 
     private static void countSentences(String input) {
@@ -53,15 +51,19 @@ public class Main {
     private static void countSyllables(String input) {
         var line = input.split("\\s+" );
         for (String word : line) {
-            String[]vowels = word.split("[^aeiouy]{0,2}[aeiouy]{1,2}[^e]");
-            if (vowels.length == 0) {
-                syllables += 1;
+            if (word.length() <= 3) {
+                syllables++;
             } else {
-                syllables += vowels.length;
-            }
-            syllables += vowels.length;
-            if (vowels.length >= 3) {
-                polysyllables++;
+                Pattern p = Pattern.compile("[aeiouy]+[^$e(,.:;!?)]");
+                Matcher m = p.matcher(word);
+                int count = 0;
+                while (m.find()){
+                    syllables++;
+                    count++;
+                }
+                if (count >= 3) {
+                    polysyllables++;
+                }
             }
         }
     }
@@ -85,7 +87,7 @@ public class Main {
     }
 
     private static void chooseIndex() {
-        try (Scanner scanner = new Scanner(System.in);) {
+        try (Scanner scanner = new Scanner(System.in)) {
             String score = scanner.nextLine();
             switch (score) {
                 case "ARI" : getScoreARI();
@@ -115,47 +117,50 @@ public class Main {
 
 
     private static void getScoreARI() {
-        float score;
-        score =  4.71f * characters / words + 0.5f * words/sentences - 21.43f;
-        System.out.printf("Automated Readability Index: %.2f (about %s-year-olds).%n", score, getARIRage(score));
+
+        aRI =  4.71f * characters / words + 0.5f * words / sentences - 21.43f;
+
+        System.out.printf("Automated Readability Index: %.2f (about %s-year-olds).%n", aRI, getARIRage(aRI));
     }
 
     private static void getScoreFK() {
-        float score;
-        score = (((0.39f * words) / sentences) + ((11.8f * syllables) / words)) - 15.59f;
-        System.out.printf("Flesch–Kincaid readability tests: %.2f (about %s-year-olds).%n", score, getRage(score));
+        fK = (((0.39f * words) / sentences) + ((11.8f * syllables) / words)) - 15.59f;
+        System.out.printf("Flesch–Kincaid readability tests: %.2f (about %s-year-olds).%n", fK, getRage(fK));
     }
 
     private static void getScoreSMOG() {
-        float score;
-        score = (1.043f * (float) Math.sqrt((double) (polysyllables * 30 / sentences))) + 3.1291f;
-        System.out.printf("Simple Measure of Gobbledygook: %.2f (about %s-year-olds).%n", score, getRage(score));
+        sMOG = (1.043f * (float) Math.sqrt((double) (polysyllables * 30) / sentences)) + 3.1291f;
+        System.out.printf("Simple Measure of Gobbledygook: %.2f (about %s-year-olds).%n", sMOG, getRage(sMOG));
     }
 
     private static void getScoreCL() {
-        float score;
-        score = 0.0588f * (float) (characters / words) - 0.296f * (float) (sentences / words) - 15.8f;
-        System.out.printf("Coleman–Liau index: %.2f (about 17-year-olds).%n", score);
+        cL = 0.0588f * (float) (characters / words * 100) - 0.296f * (float) (sentences / words * 100) - 15.8f;
+        System.out.printf("Coleman–Liau index: %.2f (about %s-year-olds).%n", cL, getRage(cL));
+    }
+
+    private static void getAverageAge() {
+        float age;
+        age = getARIRage(aRI)
     }
 
 
 
     private static String getARIRage(float score) {
-        String rage = "";
+        int rage = "";
         switch ((int) Math.ceil(score)) {
-            case 1: rage = "6";
+            case 1: rage = 6;
             break;
-            case 2 : rage = "7";
+            case 2 : rage = 7;
             break;
-            case 3 : rage = "8";
+            case 3 : rage = 8;
             break;
-            case 4 : rage = "9";
+            case 4 : rage = 9;
             break;
-            case 5 : rage = "10";
+            case 5 : rage = 10;
             break;
-            case 6 : rage = "11";
+            case 6 : rage = 11;
             break;
-            case 7 : rage = "12";
+            case 7 : rage = 12;
             break;
             case 8 : rage = "13";
             break;
@@ -172,7 +177,6 @@ public class Main {
             case 14 : rage = "19";
             break;
             default:
-                System.out.println("Something wrong");
                 break;
         }
         return rage;
@@ -209,7 +213,6 @@ public class Main {
             case 14 : rage = "22";
                 break;
             default:
-                System.out.println("Something wrong");
                 break;
         }
         return rage;
