@@ -113,18 +113,6 @@ public class Main {
     }
 
 
-    private static void getScoreCL() {
-        float score;
-        score = 0.0588f * (float) (characters / words) - 0.296f * (float) (sentences / words) - 15.8f;
-        System.out.printf("Coleman–Liau index: %.2f (about 17-year-olds).%n", score);
-    }
-
-    private static void getScoreSMOG() {
-        float score;
-        score = (1.043f * (float) Math.sqrt((double) (polysyllables * 30 / sentences))) + 3.1291f;
-        System.out.printf("Simple Measure of Gobbledygook: %.2f (about %s-year-olds).%n", score, getRage(score));
-    }
-
     private static void getScoreARI() {
         float score;
         score =  4.71f * characters / words + 0.5f * words/sentences - 21.43f;
@@ -135,6 +123,18 @@ public class Main {
         float score;
         score = (((0.39f * words) / sentences) + ((11.8f * syllables) / words)) - 15.59f;
         System.out.printf("Flesch–Kincaid readability tests: %.2f (about %s-year-olds).%n", score, getRage(score));
+    }
+
+    private static void getScoreSMOG() {
+        float score;
+        score = (1.043f * (float) Math.sqrt((double) (polysyllables * 30 / sentences))) + 3.1291f;
+        System.out.printf("Simple Measure of Gobbledygook: %.2f (about %s-year-olds).%n", score, getRage(score));
+    }
+
+    private static void getScoreCL() {
+        float score;
+        score = 0.0588f * (float) (characters / words) - 0.296f * (float) (sentences / words) - 15.8f;
+        System.out.printf("Coleman–Liau index: %.2f (about 17-year-olds).%n", score);
     }
 
 
